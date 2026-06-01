@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, type TargetAndTransition } from "framer-motion";
 import { cn } from "@/lib/utils";
 
 type MascotPose =
@@ -56,7 +56,7 @@ const poses: Record<MascotPose, { body: string; arm1: string; arm2: string; extr
   },
 };
 
-const poseAnimations: Record<MascotPose, object> = {
+const poseAnimations: Record<MascotPose, TargetAndTransition> = {
   waving: {
     y: [0, -6, 0],
     transition: { repeat: Infinity, duration: 2.5, ease: "easeInOut" },
@@ -88,7 +88,7 @@ const poseAnimations: Record<MascotPose, object> = {
   },
 };
 
-const armAnimations: Record<MascotPose, object> = {
+const armAnimations: Record<MascotPose, TargetAndTransition> = {
   waving: {
     rotate: [-15, 20, -15],
     transition: { repeat: Infinity, duration: 0.6, ease: "easeInOut" },
