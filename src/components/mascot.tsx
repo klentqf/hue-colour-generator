@@ -3,6 +3,8 @@
 import { motion, type TargetAndTransition } from "framer-motion";
 import { cn } from "@/lib/utils";
 
+// pip — a tiny cute potato 🥔
+
 type MascotPose =
   | "waving"
   | "sitting"
@@ -18,181 +20,113 @@ interface MascotProps {
   className?: string;
 }
 
-const poseAnimations: Record<MascotPose, TargetAndTransition> = {
-  waving: {
-    y: [0, -8, 0],
-    transition: { repeat: Infinity, duration: 2.5, ease: "easeInOut" },
-  },
-  sitting: {
-    y: [0, -4, 0],
-    transition: { repeat: Infinity, duration: 3, ease: "easeInOut" },
-  },
-  lying: {
-    x: [0, 3, 0],
-    transition: { repeat: Infinity, duration: 4, ease: "easeInOut" },
-  },
-  walking: {
-    x: [0, 5, 0, -5, 0],
-    transition: { repeat: Infinity, duration: 2, ease: "easeInOut" },
-  },
-  peeking: {
-    x: [0, 3, 0],
-    transition: { repeat: Infinity, duration: 2.2, ease: "easeInOut" },
-  },
-  bouncing: {
-    y: [0, -14, 0],
-    transition: { repeat: Infinity, duration: 0.65, ease: "easeInOut" },
-  },
-  celebrating: {
-    rotate: [-4, 4, -4],
-    y: [0, -10, 0],
-    transition: { repeat: Infinity, duration: 0.75, ease: "easeInOut" },
-  },
+const bodyAnimations: Record<MascotPose, TargetAndTransition> = {
+  waving:      { y: [0, -8, 0],           transition: { repeat: Infinity, duration: 2.4, ease: "easeInOut" } },
+  sitting:     { y: [0, -4, 0],           transition: { repeat: Infinity, duration: 3.0, ease: "easeInOut" } },
+  lying:       { rotate: [0, 2, 0],       transition: { repeat: Infinity, duration: 4.0, ease: "easeInOut" } },
+  walking:     { x: [0, 4, 0, -4, 0],    transition: { repeat: Infinity, duration: 1.8, ease: "easeInOut" } },
+  peeking:     { x: [0, 3, 0],           transition: { repeat: Infinity, duration: 2.0, ease: "easeInOut" } },
+  bouncing:    { y: [0, -16, 0],          transition: { repeat: Infinity, duration: 0.6, ease: "easeInOut" } },
+  celebrating: { rotate: [-5, 5, -5], y: [0, -10, 0], transition: { repeat: Infinity, duration: 0.7, ease: "easeInOut" } },
 };
 
-const wavingArm: TargetAndTransition = {
-  rotate: [-20, 25, -20],
-  transition: { repeat: Infinity, duration: 0.55, ease: "easeInOut" },
+const wavingArmAnim: TargetAndTransition = {
+  rotate: [-20, 30, -20],
+  transition: { repeat: Infinity, duration: 0.5, ease: "easeInOut" },
 };
 
-const celebratingArms: TargetAndTransition = {
-  rotate: [-35, 35, -35],
-  transition: { repeat: Infinity, duration: 0.4, ease: "easeInOut" },
+const celebArmAnim: TargetAndTransition = {
+  rotate: [-40, 40, -40],
+  transition: { repeat: Infinity, duration: 0.38, ease: "easeInOut" },
 };
 
 export function Mascot({ pose = "waving", size = 100, className }: MascotProps) {
-  const bodyAnim = poseAnimations[pose];
-
   return (
     <motion.div
       className={cn("relative inline-block select-none", className)}
       style={{ width: size, height: size }}
-      animate={bodyAnim}
+      animate={bodyAnimations[pose]}
     >
-      <svg
-        viewBox="0 0 120 130"
-        width={size}
-        height={size * 1.08}
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        {/* Shadow */}
-        <ellipse cx="60" cy="124" rx="22" ry="6" fill="rgba(0,0,0,0.10)" />
+      <svg viewBox="0 0 100 100" width={size} height={size} xmlns="http://www.w3.org/2000/svg">
 
-        {/* Body - chunky rounded shape */}
+        {/* shadow */}
+        <ellipse cx="50" cy="96" rx="20" ry="5" fill="rgba(0,0,0,0.10)" />
+
+        {/* potato body — lumpy irregular oval */}
         <path
-          d="M60 38 C38 38 28 52 28 68 C28 88 38 104 60 106 C82 104 92 88 92 68 C92 52 82 38 60 38 Z"
-          fill="#F5E87A"
+          d="M50 18
+             C28 16 16 28 15 44
+             C14 58 18 72 30 80
+             C38 86 50 88 62 84
+             C76 80 86 68 86 54
+             C86 36 72 20 50 18 Z"
+          fill="#F0E070"
           stroke="#1a1a1a"
-          strokeWidth="4"
+          strokeWidth="3.5"
           strokeLinejoin="round"
         />
 
-        {/* Head - large round */}
-        <circle
-          cx="60"
-          cy="36"
-          r="26"
-          fill="#F5E87A"
-          stroke="#1a1a1a"
-          strokeWidth="4"
-        />
-
-        {/* Blush cheeks */}
-        <ellipse cx="44" cy="42" rx="7" ry="5" fill="#F4A0A0" opacity="0.65" />
-        <ellipse cx="76" cy="42" rx="7" ry="5" fill="#F4A0A0" opacity="0.65" />
-
-        {/* Eyes */}
-        <circle cx="53" cy="33" r="2.8" fill="#1a1a1a" />
-        <circle cx="67" cy="33" r="2.8" fill="#1a1a1a" />
-
-        {/* Smile */}
+        {/* little bump on top (potato eye/nub) */}
         <path
-          d="M52 43 Q60 51 68 43"
-          fill="none"
+          d="M42 18 C40 10 46 8 50 10 C54 8 58 11 56 18"
+          fill="#F0E070"
           stroke="#1a1a1a"
-          strokeWidth="2.8"
-          strokeLinecap="round"
+          strokeWidth="3"
+          strokeLinejoin="round"
         />
 
-        {/* Left arm */}
+        {/* blush */}
+        <ellipse cx="35" cy="58" rx="7" ry="5" fill="#F4A0A0" opacity="0.6" />
+        <ellipse cx="65" cy="58" rx="7" ry="5" fill="#F4A0A0" opacity="0.6" />
+
+        {/* eyes */}
+        <circle cx="42" cy="50" r="3" fill="#1a1a1a" />
+        <circle cx="58" cy="50" r="3" fill="#1a1a1a" />
+        {/* eye shine */}
+        <circle cx="43.5" cy="48.5" r="1" fill="white" />
+        <circle cx="59.5" cy="48.5" r="1" fill="white" />
+
+        {/* smile */}
+        <path d="M42 62 Q50 70 58 62" fill="none" stroke="#1a1a1a" strokeWidth="2.5" strokeLinecap="round" />
+
+        {/* left arm (waving or celebrating) */}
         {pose === "waving" ? (
-          <motion.g animate={wavingArm} style={{ originX: "88px", originY: "65px" }}>
-            <path
-              d="M88 65 Q100 55 108 44 Q112 38 110 32"
-              fill="none"
-              stroke="#1a1a1a"
-              strokeWidth="4"
-              strokeLinecap="round"
-            />
-            <circle cx="110" cy="31" r="5" fill="#F5E87A" stroke="#1a1a1a" strokeWidth="3.5" />
+          <motion.g animate={wavingArmAnim} style={{ originX: "82px", originY: "52px" }}>
+            <path d="M80 52 Q90 40 93 30" fill="none" stroke="#1a1a1a" strokeWidth="3.5" strokeLinecap="round" />
+            <circle cx="93" cy="29" r="5.5" fill="#F0E070" stroke="#1a1a1a" strokeWidth="3" />
           </motion.g>
         ) : pose === "celebrating" ? (
-          <motion.g animate={celebratingArms} style={{ originX: "88px", originY: "65px" }}>
-            <path
-              d="M88 65 Q100 50 108 36"
-              fill="none"
-              stroke="#1a1a1a"
-              strokeWidth="4"
-              strokeLinecap="round"
-            />
-            <circle cx="109" cy="34" r="5" fill="#F5E87A" stroke="#1a1a1a" strokeWidth="3.5" />
+          <motion.g animate={celebArmAnim} style={{ originX: "82px", originY: "52px" }}>
+            <path d="M80 52 Q90 36 91 22" fill="none" stroke="#1a1a1a" strokeWidth="3.5" strokeLinecap="round" />
+            <circle cx="91" cy="21" r="5.5" fill="#F0E070" stroke="#1a1a1a" strokeWidth="3" />
           </motion.g>
         ) : (
-          <g>
-            <path
-              d="M88 68 Q100 72 106 80"
-              fill="none"
-              stroke="#1a1a1a"
-              strokeWidth="4"
-              strokeLinecap="round"
-            />
-            <circle cx="107" cy="82" r="5" fill="#F5E87A" stroke="#1a1a1a" strokeWidth="3.5" />
-          </g>
+          <>
+            <path d="M80 58 Q90 64 92 72" fill="none" stroke="#1a1a1a" strokeWidth="3.5" strokeLinecap="round" />
+            <circle cx="92" cy="73" r="5.5" fill="#F0E070" stroke="#1a1a1a" strokeWidth="3" />
+          </>
         )}
 
-        {/* Right arm */}
+        {/* right arm */}
         {pose === "celebrating" ? (
-          <motion.g animate={celebratingArms} style={{ originX: "32px", originY: "65px" }}>
-            <path
-              d="M32 65 Q20 50 12 36"
-              fill="none"
-              stroke="#1a1a1a"
-              strokeWidth="4"
-              strokeLinecap="round"
-            />
-            <circle cx="11" cy="34" r="5" fill="#F5E87A" stroke="#1a1a1a" strokeWidth="3.5" />
+          <motion.g animate={celebArmAnim} style={{ originX: "18px", originY: "52px" }}>
+            <path d="M20 52 Q10 36 9 22" fill="none" stroke="#1a1a1a" strokeWidth="3.5" strokeLinecap="round" />
+            <circle cx="9" cy="21" r="5.5" fill="#F0E070" stroke="#1a1a1a" strokeWidth="3" />
           </motion.g>
         ) : (
-          <g>
-            <path
-              d="M32 68 Q20 72 14 80"
-              fill="none"
-              stroke="#1a1a1a"
-              strokeWidth="4"
-              strokeLinecap="round"
-            />
-            <circle cx="13" cy="82" r="5" fill="#F5E87A" stroke="#1a1a1a" strokeWidth="3.5" />
-          </g>
+          <>
+            <path d="M20 58 Q10 64 8 72" fill="none" stroke="#1a1a1a" strokeWidth="3.5" strokeLinecap="round" />
+            <circle cx="8" cy="73" r="5.5" fill="#F0E070" stroke="#1a1a1a" strokeWidth="3" />
+          </>
         )}
 
-        {/* Legs */}
-        <path
-          d="M48 104 Q44 114 40 120"
-          fill="none"
-          stroke="#1a1a1a"
-          strokeWidth="4"
-          strokeLinecap="round"
-        />
-        <circle cx="39" cy="121" r="5" fill="#F5E87A" stroke="#1a1a1a" strokeWidth="3.5" />
+        {/* tiny legs */}
+        <path d="M42 86 Q40 93 38 96" fill="none" stroke="#1a1a1a" strokeWidth="3.5" strokeLinecap="round" />
+        <circle cx="37" cy="97" r="4" fill="#F0E070" stroke="#1a1a1a" strokeWidth="3" />
 
-        <path
-          d="M72 104 Q76 114 80 120"
-          fill="none"
-          stroke="#1a1a1a"
-          strokeWidth="4"
-          strokeLinecap="round"
-        />
-        <circle cx="81" cy="121" r="5" fill="#F5E87A" stroke="#1a1a1a" strokeWidth="3.5" />
+        <path d="M58 86 Q60 93 62 96" fill="none" stroke="#1a1a1a" strokeWidth="3.5" strokeLinecap="round" />
+        <circle cx="63" cy="97" r="4" fill="#F0E070" stroke="#1a1a1a" strokeWidth="3" />
+
       </svg>
     </motion.div>
   );
