@@ -114,7 +114,7 @@ Rules:
 - Ensure sufficient contrast between text and background colours`;
 
     const response = await client.chat.completions.create({
-      model: "gpt-4o",
+      model: "gpt-4o-mini",
       messages: [{ role: "user", content: prompt }],
       temperature: 0.8,
       response_format: { type: "json_object" },
@@ -143,12 +143,13 @@ Rules:
     console.error("palette generation error:", error);
     if (error instanceof z.ZodError) {
       return NextResponse.json(
-        { error: "ai returned invalid palette format", details: error.errors },
+        { error: "ai returned invalid palette format" },
         { status: 422 }
       );
     }
+    const message = error instanceof Error ? error.message : "unknown error";
     return NextResponse.json(
-      { error: "failed to generate palette" },
+      { error: `failed to generate palette: ${message}` },
       { status: 500 }
     );
   }
