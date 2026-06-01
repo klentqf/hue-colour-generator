@@ -1,5 +1,6 @@
 "use client";
 
+import { JSX } from "react";
 import { PaletteColour } from "@/lib/types";
 
 interface PalettePreviewProps {

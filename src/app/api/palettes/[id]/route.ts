@@ -3,10 +3,11 @@ import { prisma } from "@/lib/db";
 
 export async function GET(
   _request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const palette = await prisma.palette.findUnique({ where: { id: params.id } });
+    const { id } = await params;
+    const palette = await prisma.palette.findUnique({ where: { id } });
     if (!palette) {
       return NextResponse.json({ error: "palette not found" }, { status: 404 });
     }
@@ -19,10 +20,11 @@ export async function GET(
 
 export async function DELETE(
   _request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    await prisma.palette.delete({ where: { id: params.id } });
+    const { id } = await params;
+    await prisma.palette.delete({ where: { id } });
     return NextResponse.json({ success: true });
   } catch (error) {
     console.error("delete palette error:", error);
