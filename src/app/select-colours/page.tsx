@@ -107,9 +107,12 @@ export default function SelectColoursPage() {
           <motion.div className="mt-8 glass-card p-5" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}>
             <div className="flex items-center justify-between mb-3">
               <p className="text-base font-medium text-stone-500 lowercase">{selected.length} colour{selected.length > 1 ? "s" : ""} selected</p>
-              <motion.button onClick={handleContinue} className="btn-primary flex items-center gap-2 py-2.5 px-5 text-sm"
+              <motion.button
+                onClick={() => activeFamily ? setActiveFamily(null) : handleContinue()}
+                className="btn-primary flex items-center gap-2 py-2.5 px-5 text-sm"
                 whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}>
-                continue <ArrowRight size={14} />
+                {activeFamily ? "back to families" : "continue"}
+                <ArrowRight size={14} />
               </motion.button>
             </div>
             <div className="flex flex-wrap gap-2">
