@@ -3,7 +3,7 @@
 import { motion, type TargetAndTransition } from "framer-motion";
 import { cn } from "@/lib/utils";
 
-// pip — a soft squishy blob with chunky integrated arms and legs
+// swatch — a friendly circle character 🎨
 
 type MascotPose =
   | "waving"
@@ -20,120 +20,95 @@ interface MascotProps {
   className?: string;
 }
 
-// One continuous blob path. Right arm raised (waving), left arm slightly out.
-// Arms and legs are chunky extensions of the same body — no stick limbs.
-const BLOB_PATH =
-  "M 68 14 " +
-  "C 84 8 106 14 116 28 " +       // top-right body curve
-  "C 124 38 132 26 140 16 " +     // into right raised arm
-  "C 146 8 146 -2 136 2 " +       // arm tip
-  "C 126 6 122 18 116 28 " +      // arm back into shoulder (reused point)
-  "C 112 36 116 52 120 66 " +     // right shoulder/body
-  "C 124 80 122 96 114 108 " +    // right body
-  "C 110 118 112 132 106 144 " +  // right leg outer
-  "C 102 152 90 156 80 150 " +    // right foot
-  "C 72 144 70 132 72 122 " +     // right leg inner / crotch
-  "C 74 114 70 108 66 108 " +     // bottom centre
-  "C 62 108 58 114 60 122 " +     // left crotch
-  "C 62 132 58 144 50 150 " +     // left foot
-  "C 40 156 28 152 26 144 " +     // left foot outer
-  "C 20 132 24 118 20 108 " +     // left leg outer
-  "C 12 96 10 80 14 66 " +        // left body
-  "C 18 52 16 38 10 28 " +        // left shoulder
-  "C 4 18 -2 8 6 4 " +            // left arm tip
-  "C 14 0 24 10 28 22 " +         // left arm back
-  "C 32 30 34 24 40 16 " +        // left shoulder into body
-  "C 50 6 60 16 68 14 Z";         // back to top
-
 const bodyAnimations: Record<MascotPose, TargetAndTransition> = {
   waving:      { y: [0, -8, 0],         transition: { repeat: Infinity, duration: 2.5, ease: "easeInOut" } },
   sitting:     { y: [0, -4, 0],         transition: { repeat: Infinity, duration: 3.0, ease: "easeInOut" } },
-  lying:       { rotate: [0, 3, 0],     transition: { repeat: Infinity, duration: 4.0, ease: "easeInOut" } },
-  walking:     { x: [0, 5, 0, -5, 0],  transition: { repeat: Infinity, duration: 1.8, ease: "easeInOut" } },
-  peeking:     { x: [0, 4, 0],         transition: { repeat: Infinity, duration: 2.0, ease: "easeInOut" } },
-  bouncing:    {
-    y: [0, -18, 0],
-    scaleX: [1, 1.1, 1],
-    scaleY: [1, 0.9, 1],
-    transition: { repeat: Infinity, duration: 0.6, ease: "easeInOut" },
-  },
-  celebrating: {
-    rotate: [-6, 6, -6],
-    y: [0, -12, 0],
-    transition: { repeat: Infinity, duration: 0.65, ease: "easeInOut" },
-  },
+  lying:       { rotate: [-8, 8, -8],   transition: { repeat: Infinity, duration: 4.0, ease: "easeInOut" } },
+  walking:     { x: [0, 5, 0, -5, 0],  transition: { repeat: Infinity, duration: 1.6, ease: "easeInOut" } },
+  peeking:     { x: [0, 5, 0],         transition: { repeat: Infinity, duration: 2.0, ease: "easeInOut" } },
+  bouncing:    { y: [0, -18, 0], scaleX: [1, 1.08, 1], scaleY: [1, 0.92, 1], transition: { repeat: Infinity, duration: 0.55, ease: "easeInOut" } },
+  celebrating: { rotate: [-6, 6, -6], y: [0, -12, 0], transition: { repeat: Infinity, duration: 0.65, ease: "easeInOut" } },
 };
 
-// Little wiggle animation for the raised arm tip
-const armWiggle: TargetAndTransition = {
-  rotate: [-12, 18, -12],
+const rightArmWave: TargetAndTransition = {
+  rotate: [-25, 20, -25],
   transition: { repeat: Infinity, duration: 0.5, ease: "easeInOut" },
 };
 
 export function Mascot({ pose = "waving", size = 100, className }: MascotProps) {
-  // scale the fixed viewBox to requested size
-  const vbWidth = 150;
-  const vbHeight = 165;
+  const isWaving = pose === "waving" || pose === "celebrating";
 
   return (
     <motion.div
       className={cn("relative inline-block select-none", className)}
-      style={{ width: size, height: size * (vbHeight / vbWidth) }}
+      style={{ width: size, height: size * 1.2 }}
       animate={bodyAnimations[pose]}
     >
       <svg
-        viewBox="-5 -8 155 172"
+        viewBox="0 0 200 240"
         width={size}
-        height={size * (vbHeight / vbWidth)}
+        height={size * 1.2}
         xmlns="http://www.w3.org/2000/svg"
       >
-        {/* soft drop shadow */}
-        <ellipse cx="67" cy="158" rx="36" ry="8" fill="rgba(0,0,0,0.09)" />
+        {/* shadow */}
+        <ellipse cx="100" cy="233" rx="38" ry="9" fill="rgba(0,0,0,0.08)" />
 
-        {/* main blob — one continuous path */}
-        <path
-          d={BLOB_PATH}
-          fill="#F5E86A"
-          stroke="#1C1C1C"
-          strokeWidth="4.5"
-          strokeLinejoin="round"
-          strokeLinecap="round"
-        />
+        {/* left arm — static, slightly outward */}
+        <line x1="38" y1="115" x2="10" y2="132" stroke="#8B7EC8" strokeWidth="5.5" strokeLinecap="round" />
+        {/* left hand — 3 prongs */}
+        <line x1="10" y1="132" x2="2"  y2="124" stroke="#8B7EC8" strokeWidth="4" strokeLinecap="round" />
+        <line x1="10" y1="132" x2="4"  y2="134" stroke="#8B7EC8" strokeWidth="4" strokeLinecap="round" />
+        <line x1="10" y1="132" x2="8"  y2="142" stroke="#8B7EC8" strokeWidth="4" strokeLinecap="round" />
 
-        {/* subtle inner highlight to give the gummy/squishy feel */}
-        <path
-          d="M 62 24 C 74 18 90 24 98 36 C 84 22 68 24 62 24 Z"
-          fill="rgba(255,255,255,0.35)"
-          stroke="none"
-        />
+        {/* right arm — animated when waving */}
+        {isWaving ? (
+          <motion.g animate={rightArmWave} style={{ originX: "162px", originY: "115px" }}>
+            <line x1="162" y1="115" x2="190" y2="100" stroke="#8B7EC8" strokeWidth="5.5" strokeLinecap="round" />
+            <line x1="190" y1="100" x2="198" y2="92"  stroke="#8B7EC8" strokeWidth="4" strokeLinecap="round" />
+            <line x1="190" y1="100" x2="196" y2="102" stroke="#8B7EC8" strokeWidth="4" strokeLinecap="round" />
+            <line x1="190" y1="100" x2="192" y2="110" stroke="#8B7EC8" strokeWidth="4" strokeLinecap="round" />
+          </motion.g>
+        ) : (
+          <g>
+            <line x1="162" y1="115" x2="190" y2="132" stroke="#8B7EC8" strokeWidth="5.5" strokeLinecap="round" />
+            <line x1="190" y1="132" x2="198" y2="124" stroke="#8B7EC8" strokeWidth="4" strokeLinecap="round" />
+            <line x1="190" y1="132" x2="196" y2="134" stroke="#8B7EC8" strokeWidth="4" strokeLinecap="round" />
+            <line x1="190" y1="132" x2="192" y2="142" stroke="#8B7EC8" strokeWidth="4" strokeLinecap="round" />
+          </g>
+        )}
 
-        {/* eyes — slightly asymmetric for personality */}
-        <circle cx="52" cy="58" r="4" fill="#1C1C1C" />
-        <circle cx="78" cy="55" r="4" fill="#1C1C1C" />
-        {/* eye shine */}
-        <circle cx="54" cy="56" r="1.4" fill="white" />
-        <circle cx="80" cy="53" r="1.4" fill="white" />
+        {/* left leg */}
+        <line x1="82"  y1="178" x2="76"  y2="218" stroke="#8B7EC8" strokeWidth="5.5" strokeLinecap="round" />
+        {/* left foot */}
+        <line x1="76"  y1="218" x2="60"  y2="220" stroke="#8B7EC8" strokeWidth="5"   strokeLinecap="round" />
+
+        {/* right leg */}
+        <line x1="118" y1="178" x2="124" y2="218" stroke="#8B7EC8" strokeWidth="5.5" strokeLinecap="round" />
+        {/* right foot */}
+        <line x1="124" y1="218" x2="140" y2="220" stroke="#8B7EC8" strokeWidth="5"   strokeLinecap="round" />
+
+        {/* body — large soft circle */}
+        <circle cx="100" cy="100" r="78" fill="#C8B4E8" />
+
+        {/* cheeks */}
+        <circle cx="52"  cy="115" r="14" fill="#F4A0C0" opacity="0.75" />
+        <circle cx="148" cy="115" r="14" fill="#F4A0C0" opacity="0.75" />
+
+        {/* nose */}
+        <circle cx="100" cy="92" r="12" fill="#F5E06A" />
+
+        {/* eyes */}
+        <circle cx="72"  cy="90" r="5.5" fill="#3A2D7A" />
+        <circle cx="128" cy="90" r="5.5" fill="#3A2D7A" />
 
         {/* smile */}
         <path
-          d="M 50 72 Q 65 84 80 72"
+          d="M 78 116 Q 100 132 122 116"
           fill="none"
-          stroke="#1C1C1C"
-          strokeWidth="3"
+          stroke="#3A2D7A"
+          strokeWidth="4"
           strokeLinecap="round"
         />
-
-        {/* little wave wiggle at the tip of the raised right arm */}
-        {(pose === "waving" || pose === "celebrating") && (
-          <motion.g
-            animate={armWiggle}
-            style={{ originX: "136px", originY: "2px" }}
-          >
-            {/* tiny motion lines suggesting movement */}
-            <line x1="148" y1="-4" x2="154" y2="-8" stroke="#1C1C1C" strokeWidth="2.5" strokeLinecap="round" opacity="0.4" />
-            <line x1="152" y1="2" x2="160" y2="0" stroke="#1C1C1C" strokeWidth="2" strokeLinecap="round" opacity="0.3" />
-          </motion.g>
-        )}
       </svg>
     </motion.div>
   );

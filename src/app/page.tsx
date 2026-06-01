@@ -41,7 +41,7 @@ export default function WelcomePage() {
           transition={{ duration: 0.6 }}
         >
           <SpeechBubble
-            text="hi! i'm pip 🥔 let's make something beautiful together ✨"
+            text="hi! i'm swatch 🎨 let's make something beautiful together ✨"
             className="mb-5"
           />
           <Mascot pose="waving" size={140} />
